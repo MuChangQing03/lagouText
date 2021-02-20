@@ -1,0 +1,874 @@
+一 Web知识概述
+1 软件架构
+网络中有很多的计算机，它们直接的信息交流，我们称之为：交互
+
+在互联网交互的过程的有两个非常典型的交互方式——B/S 交互模型（架构）和 C/S 交互模型 （架构）
+
+C/S架构
+
+Client/Server 客户端/服务器
+
+访问服务器资源必须安装客户端软件
+
+
+B/S架构
+
+Browser/Server 浏览器/服务器
+
+访问服务器资源不需要专门安装客户端软件,而是直接通过浏览器访问服务器资源.
+
+例如: 天猫、京东、知乎网站
+
+2 资源的分类
+资源：计算机中数据文件
+
+静态资源
+
+对于同一个页面,不同用户看到的内容是一样的。
+
+例如：体育新闻、网站门户等，常见后缀： *.html、*.js、*.css
+
+动态资源
+
+用对于同一个页面,不同用户看到的内容可能不一样。
+
+例如：购物车、我的订单等，常见后缀： *.jsp、*.aspx、*.php
+
+3 URL 请求路径
+        URL （ Uniform Resource Locator） ，统一资源定位符是对互联网上资源位置的一种表示，互联网上 的每个文件都有一个唯一的 URL 。
+
+
+完整格式如下
+
+协议://域名:端口号/资源位置?参数=值
+
+* 协议，http、https、ftp等
+
+* 域名，域名或IP地址，都可以访问WEB资源
+
+* 端口号，程序必须使用端口号，才可以让另一个计算机访问。http协议的默认端：80
+
+* 资源位置，用于描述WEB资源在服务器上的位置。
+
+* 参数=值，浏览器和服务器交互传递的数据
+
+
+4 常见的Web服务器
+
+* Tomcat: Apache组织开源免费的web服务器,支持JavaEE规范（Servlet/Jsp）.
+
+* Jetty:Apache组织开源免费的小型web服务器,支持JavaEE规范.
+
+* JBoss: RedHat红帽公司的开源免费的web服务器,支持JavaEE规范.
+
+* Glass Fish:Sun公司开源免费的web服务器,支持JavaEE规范.
+
+---------------------------------------------------------------------
+
+* WebLogic: Oracle公司收费的web服务器,支持JavaEE规范.
+
+* WebSphere:IBM公司收费的web服务器,支持JavaEE规范
+
+JavaEE规范
+
+在 Java 中所有的服务器厂商都要实现一组 Oracle 公司规定的接口，这些接口是称为 JavaEE规范。不同厂商的 JavaWeb 服务器都实现了这些接口，在 JavaEE 中一共有 13 种规范。实现的规范越多，功能越强。
+ 
+二 Tomcat服务器【重点】
+
+发布项目三种方式 
+① webapps 部署(最简单)
+
+直接放置在 webapps 目录下
+
+② server.xml部署（了解）
+
+在tomcat/conf/server.xml中找到<Host>标签，添加<Context>标签
+缺点
+1. 配置文件修改完毕后，需要重启后生效 ...
+2.server.xml 是 tomcat 的核心配置文件，如果稍有不慎操作失误，整个 tomcat 启动失败
+3. 这种方案作为了解即可 
+
+
+③ 独立 xml 部署 ( 开发时使用 )
+在tomcat/conf/Catalina/localhost 目录下创建一个xml文件，添加标签
+
+
+二、HTTP协议  
+1 Http 简介
+什么是 Http 协议
+HTTP协议：超文本传输协议（HTTP，HyperText Transfer Protocol)是互联网上应用最为广泛的一种网络协议。用于定义WEB浏览器与WEB服务器之间交换数据的过程。
+
+传输协议：在客户端和服务器端通信时，规范了传输数据的格式
+
+
+必须先有请求,才会有响应
+
+HTTP协议的作用
+HTTP协议是学习JavaWEB开发的基石，不深入了解HTTP协议，就不能说掌握了WEB开发，更无法管理和维护一些复杂的WEB站点。
+
+HTTP协议的特点
+基于请求/响应模型的协议。
+
+请求和响应必须成对；
+
+先有请求后有响应。
+
+简单快捷
+
+因为发送请求的时候只需要发送请求方式和请求路径即可
+
+HTTP协议默认的端口:80
+
+例如： http://www.lagou.com:80
+
+无状态协议
+
+多次请求之间相互独立，不能交互数据
+
+Http 协议的版本
+HTTP/1.0，发送请求，创建一次连接，获得一个web资源，连接断开。
+
+HTTP/1.1，发送请求，创建一次连接，获得多个web资源，连接断开。
+
+HTTP 协议有两种报文格式：
+请求报文：由客户端向服务器端发出的报文。
+
+响应报文：从服务端到客户端的报文。
+
+2 Http 协议详解
+2.1 Http 请求报文详解
+HTTP请求报文：由客户端向服务器端发出的报文。
+
+HTTP请求报文格式：包含请求行、请求头、空行、请求体 四个部分
+
+
+
+请求行
+请求行格式：请求方式 资源路径 协议 / 版本
+例如： POST /web01/login.html HTTP/1.1
+请求行必须在 HTTP 请求格式的第一行。
+请求方式：协议规定 7 种，常用两种： GET 和 POST
+GET 请求：
+将请求参数追加在URL后面，不安全。例如：login.html?username=tom&password=1234
+
+URL长度限制GET请求方式的数据大小。
+
+没有请求体
+
+POST 请求
+请求参数显示请求体处，较安全。
+
+请求数据大小没有限制。
+
+只有表单设置为method=”post”才是post请求.其他的都是get请求。
+
+常见GET请求：地址栏直接访问、<a href=””>、<img src=””> 等
+
+请求头
+请求头 : 描述了客户端向服务器发送请求时使用的 http协议类型，所使用的编码，以及发送内容的长度， referer ，等等。
+请求头也是用的键值对 key
+
+请求体
+Http 请求报文演示
+通常情况下，只有 post 请求方式才会使用到请求体，请求体中都是用户表单提交的数据，每一项数据都使用键
+值对 key=value ，多组值使用 & 相连。
+例如； username=tom&password=1234
+创建页面，编写 “login.html” ，并提供表单，分别设置表单的提交方式为： get 和 post。将表单提交位置设置成 # ，表示提交到当前表单。
+<form action="#" method="post">
+用户名：<input type="text" name="username" value=""/> <br/>
+密 码：<input type="text" name="password" value=""/> <br/>
+<input type="submit" />
+</form>
+
+2.2 Http 响应报文详解
+响应报文：从服务端到客户端的报文。
+HTTP 响应报文格式：响应行、响应头、空行、响应体 四个部分
+
+响应行
+例如： HTTP/1.1 200 OK
+格式：协议 / 版本 状态码 状态码描述
+状态码：服务器与浏览器用于确定状态的固定数字号码
+200 ：请求成功。
+302 ：请求重定向。
+304 ：请求资源没有改变，访问本地缓存。
+404 ：请求资源不存在。通常是用户路径编写错误，也可能是服务器资源已删除。
+500 ：服务器内部错误。通常程序抛异常
+响应头
+响应头: 用来描述服务器回给客户端浏览器的content的一些描述，例如: 我是什么服务器，我返回的是啥编码，我返回的内容有多长等
+
+响应头也是用的键值对 key:value
+
+响应体
+
+响应体，就是服务器发送给浏览器的正文。
+Http 响应报文演示
+
+
+三、Servlet
+一 Servlet 概述
+servlet= server+applet ：运行在服务器端的java程序。
+
+Servlet是一个接口，一个类要想通过浏览器被访问到,那么这个类就必须直接或间接的实现Servlet接口
+
+作用
+
+接收请求，处理逻辑，响应结果
+
+
+二 servlet 实现步骤
+
+① 创建 web 项目
+② 编写普通 java 类，实现 servlet 接口
+③ 在 web.xml 配置 url-pattern
+④ 部署 web 项目
+⑤ 启动测试
+
+
+三 Servlet生命周期
+
+ 
+
+// 1. servlet 对象创建时，调用此方法
+public void init ( ServletConfig servletConfig );
+// 2. 用户访问 servlet 时，调用此方法
+public void service ( ServletRequest servletRequest , ServletResponse
+servletResponse );
+// 3. servlet 对象销毁时，调用此方法
+public void destroy ();
+ 
+* 创建
+
+1 ）默认情况下
+用户第一次访问时，创建servlet，执行init方法
+
+2 ）修改创建时机
+<load-on-startup></load-onstartup>
+
+正数：4-N 【服务器启动时，创建】
+
+补充：Tomcat的web.xml里有1,3 所以推荐4-n
+
+负数（默认值）：-1 【用户第一次访问时，创建】
+
+* 运行（提供服务）
+用户每次访问时，都执行service方法
+
+* 销毁
+服务器正常关闭时，销毁servlet，执行destroy方法
+
+```
+笔试题：请描述下 servlet 的生命周期：
+答案：servlet是一个单实例多线程的，默认情况下，第一次请求来的时候，才会对该servlet进行实例化，并执行初始化init方法，随后再执行service方法完成业务处理，当每一次请求发送过来，都会从新开启一个线程，来执行servlet中的service方法，当服务器关闭或者servlet被移除的时候，会执行destory方法
+
+
+六 Request 对象
+6.1 request对象概述
+
+用户通过浏览器访问服务器时，Tomcat将HTTP请求中所有的信息都封装在Request对象中
+
+作用：开发人员可以通过request对象方法，来获取浏览器发送的所有信息.
+
+6.2 获取请求行信息
+
+* 例如：
+GET /servlet_demo/requestDemo1 HTTP/1.1
+* 相关API：
+1. 获取请求方式 GET【掌握】
+String getMethod()
+2. 获取项目虚拟路径（项目名）/servlet_demo【掌握】
+String getContextPath()
+3. 获取URL http://localhost:8080/servlet_demo/requestDemo1
+统一资源定位符（确定某一个地址） 中华人民共和国
+StringBuffer getRequestURL()
+4. 获取协议和版本号 HTTP/1.1
+String getProtocol()
+5. 获取客户端ip
+String getRemoteAddr()
+
+6.3 获取请求头信息
+
+* 例如：
+Host: 127.0.0.1:8080
+* 相关 API ：
+1. 获取知道请求头名称对应的值，注：名称不区分大小写
+String getHeader(String name)
+2. 获取所有请求头的名称
+Enumeration<String> getHeaderNames()
+注：是 Iterator 前身
+
+6.4 获取请求体信息（请求参数）【重点....】
+
+不论get还是post请求方式，都可以使用下列方法来获取请求参数
+
+* 参数
+username=jack&password=123&hobby=drink&hobby=perm
+
+* API
+1. 获取指定参数名的值 username=jack
+String getParameter(String name)
+
+2. 获取指定参数名的值数组 hobby=drink&hobby=perm
+String[] getParameterValues(String name)
+
+3. 获取所有参数名和对应值数组，参数名 name （ key ），值数组 value ，封装 map 集合
+Map<String,String[]> getParameterMap()
+
+* 中文乱码【重点】
+get ：在 tomcat8 及以上版本，内部 URL 编码（ UTF-8 ）
+post ：编码解码不一致，造成乱码现象
+客户端（浏览器）编码：UTF-8
+
+服务器默认 解码：ISO-8859-1 拉丁文
+
+指定解码：void setCharacterEncoding(String env)
+
+
+6.5 请求转发
+一种在服务器内部的资源跳转方式
+* API
+1. 通过 reqeust 对象，获得转发器对象
+RequestDispatcher getRequestDispatcher(String path) //要跳转到的路径
+
+2. 通过转发器对象，实现转发功能
+void forward(ServletRequest request, ServletResponse response)
+
+* 请求转发特点
+浏览器：发了一次请求
+
+地址栏：没有发生改变
+
+只能转发到服务器内部资源....
+
+* 链式编程
+request.getRequestDispatcher("/bServlet").forward(reqeust,response)
+6.6 域对象（共享数据）
+
+域对象：一个有作用范围的对象，可以在范围内共享数据
+
+request域：代表一次请求的范围，一般用于一次请求中转发的多个资源中共享数据
+
+* API
+1. 设置数据
+void setAttribute(String name, Object o)
+
+2. 获取数据
+Object getAttribute(String name)
+
+3. 删除数据
+void removeAttribute(String name)
+
+* 生命周期
+1. 何时创建？
+
+用户发送请求时，创建request
+
+2. 何时销毁
+
+服务器返回响应是，销毁request
+
+3. 作用范围？
+
+一次请求，包含多次转发
+
+七 Response对象  
+
+7.1 概述
+
+response对象表示web服务器给浏览器返回的响应信息
+
+作用：开发人员可以使用response对象的方法，设置要返回给浏览器的响应信息
+
+7.2 设置Http响应消息
+
+响应行
+
+* 格式 协议/版本号 状态码
+
+* 例如 HTTP/1.1 200
+
+* API
+1. 设置状态码
+
+void setStatus(int sc) 200 302 304 404 500
+
+响应头
+
+* 格式 响应头名称：响应头的值
+* 例如 Location:http://www.lagou.com
+* API
+1. 设置指定头名称和对应的值
+
+void setHeader(String name, String value)
+
+响应体【重点】
+
+* API （输出流对象）
+1. 字符输出流
+
+PrintWriter getWriter()
+
+2. 字节输出流
+
+ServletOutputStream getOutputStream()
+
+注意：在同一个 servlet 中，二种类型的输出流不能同时存在，互斥
+ 
+
+7.3 响应重定向
+
+需求：用户访问AServlet后，服务器告诉浏览器重定向到BServlet
+
+步骤分析
+
+ * 方式一
+
+// 1. 设置状态码
+response.setStatus(302);
+// 2. 设置响应头 Location
+response.setHeader("Location"," 重定向网络地址 ");
+ 
+* 方式二
+// 1.response 这哥们封装专门处理重定向的方法
+response.sendRedirect(" 重定向网络地址 ");
+
+重定向特点
+
+1. 地址栏会发生改变
+
+2. 重定向是二次请求
+
+3. 重定向是客户端（浏览器）行为，可以跳转到服务器外部资源...
+
+4. 不能使用request域共享数据
+请求转发与重定向的区别
+
+1. 哪个对象
+转发（request对象的方法）
+request.getRequestDispatcher("/bServlet").forward(request,response);
+
+重定向（response对象的方法）
+response.sendRedirect("/day10_response/bServlet");
+
+2. 几次请求
+转发
+地址栏： 没有改变
+
+浏览器： 发了一次请求
+
+服务器： 只有一对请求和响应对象
+
+发生的位置： 服务器
+
+重定向
+地址栏： 发生了改变
+
+浏览器： 发了两次请求
+
+服务器： 有两对请求和响应对象
+
+发生的位置： 浏览器
+
+3. 小结
+写法
+转发("/servlet资源路径") 服务器内部行为
+
+重定向 ("/虚拟路径（项目名）/servlet资源路径") 浏览器外部行为
+
+使用场景(重点掌握)
+如果需要传递数据（request域），使用转发
+
+如果不需要传递数据（request域），使用重定向
+
+7.4 响应中文
+
+需求
+
+向页面输出中文数据没有乱码
+
+ 步骤分析
+
+1. 通过 response 获取字符输出流
+PrintWriter pw = response.getWriter();
+
+2. 通过字符输出输出文本
+pw.write("中文....");
+
+解决中文乱码
+
+1. 指定服务器响应编码方式
+response.setCharacterEncoding("GBK");
+
+2. 统一浏览器和服务器编码
+response.setContentType("text/html;charset=utf-8");
+
+八 ServletContext
+8.1 概述
+
+web容器（tomcat）在启动时，它会为每个web项目承建一个对应的ServletContext对象
+
+它代表：当前web项目
+
+主要作用
+1. 域对象（共享数据）
+
+2. 获取资源在服务器的真实地址
+
+3. 获取全局的配置参数
+
+4. 获取文件MIME类型
+
+获取 ServletContext 对象
+1. 通过 request 对象获得
+ServletContext sc = request.getServletContext();
+
+2. 继承 HttpServlet 后，可以直接调用
+ServletContext sc = this.getServletContext();
+
+8.2 域对象（共享数据）
+
+在当前项目范围内，共享数据（多个servlet都可以获取）
+
+1. 存储数据
+void setAttribute(String name,Object value)
+2. 获取数据
+Object getAttribute(String name)
+3. 删除数据
+void removeAttribute(String name)
+
+
+生命周期
+
+1. 何时创建？
+项目加载时，创建
+2. 何时销毁？
+项目卸载时，销毁
+3. 作用范围？
+与项目共存亡（ 多个servlet都可以操作它 ）
+ 
+
+8.3 获取资源在服务器的真实地址
+
+可以实现web项目的移植性...动态获取文件真实路径
+
+
+* API
+String getRealPath(String path);
+例：
+String realPath = req.getServletContext().getRealPath("/js/vue.js");
+String realPath1 = req.getServletContext().getRealPath("/WEB-INF/web.xml");
+8.4 获取全局的配置参数
+
+读取web.xml配置文件中标签信息，实现参数和代码的解耦（多个servlet都可以获取）
+
+
+ 8.5 获取文件MIME类型
+
+在互联网通信过程中定义的一种文件数据类型格式
+格式： 大类型/小类型 例如： text/html image/jpeg
+
+
+四、Cookie & Session
+一 会话概述
+1.1 什么是会话？
+
+日常生活中：从拨通电话到挂断电话之间的一连串你问我答的过程就是一个会话。
+
+B/S架构中：从浏览器第一次给服务器发送请求时，建立会话；直到有一方断开，会话结束。
+
+一次会话：包含多次请求响应。
+
+1.2 会话技术
+
+问题：Http是一个无状态协议，同一个会话的连续两个请求相互独立，彼此并不了解
+
+作用：用于==存储==浏览器与服务器在请求和响应过程中产生的==数据==
+
+客户端会话技术：cookie
+
+服务器端会话技术：session
+
+ 
+
+二 Cookie 【重点】
+2.1 概述
+
+Cookie作用：在一次会话的多次请求之间共享数据，将数据保存到客户端（浏览器）
+
+2.2 快速入门
+
+1. 设置数据到 cookie 中
+// 1.创建cookie对象，设置数据 *value只能存字符串
+
+Cookie cookie = new Cookie(String name,String value);
+
+// 2.通过response，响应（返回）cookie
+
+response.addCookie(cookie);
+
+2. 从 cookie 中获取数据
+// 1.通过request对象，接收cookie数组
+
+Cookie[] cookies = request.getCookies();
+
+// 2.遍历数组
+
+if(cookies!=null){
+    for (Cookie c : cookies) {
+        String name = c.getName();
+        String value = c.getValue();
+        System.out.println(name + " : " + value);
+    }
+}
+
+2.3 工作原理
+
+基于HTTP协议：请求头cookie 和 响应头 set-cookie
+
+2.4 Cookie细节
+
+2.4.1 服务器发送多个Cookie？
+
+* 答案是可以的
+// 1. 创建多个cookie对象
+
+Cookie cookie1 = new Cookie("name","lucy");
+
+Cookie cookie2 = new Cookie("age","18");
+
+// 2. 通过response响应多个
+
+response.addCookie(cookie1);
+
+response.addCookie(cookie2);
+
+ 2.4.2 Cookie在浏览器保存时间？
+
+* 默认情况下
+浏览器关闭（会话结束），cookie销毁（内存）
+
+* 设置 cookie 的存活时间
+cookie.setMaxAge(int second); -- 单位是秒
+
+正数：指定存活时间，持久化浏览器的磁盘中，到期后自动销毁
+
+负数：默认浏览器关闭，cookie销毁
+
+零：立即销毁（自杀）
+
+2.4.3 Cookie是否可以存储中文？
+
+ 
+
+* tomcat8 之前的版本，不支持中文
+URLEncoder 编码
+
+URLDecoder 解码
+
+* tomcat8 以后的版本，支持中文 ...
+Rfc6265Cookie规范，不允许使用 分号、空格等一些特殊符号...
+
+
+2.5 Cookie特点
+
+ 1. cookie存储数据都在客户端（浏览器）
+
+2. cookie的存储数据只能是字符串
+
+3. cookie单个大小不能超过4KB
+
+4. cookie存储的数据不太安全
+
+三 Session【重点】
+
+3.1 概述
+
+session作用：在一次会话的多次请求之间共享数据，将数据保存到服务器端
+
+Session基于Cookie技术实现
+
+3.2 快速入门
+
+HttpSession也是一个域对象
+
+* API
+1. 存储数据
+
+void setAttribute(String name,Object value)
+
+2. 获取数据
+
+Object getAttribute(String name)
+
+3. 删除数据
+
+void removeAttribute(String name)
+
+
+3.3 生命周期
+
+* 何时创建
+用户第一次调用request.getSession()方法时，创建
+
+* 何时销毁
+服务器非正常关闭
+
+非活跃状态30分钟后
+
+tomcat进行配置 /tocmat安装目录/conf/web.xml
+
+session.invalidate(); 自杀
+
+* 作用范围
+一次会话中，多次请求之间
+
+注意：每一个浏览器跟服务器都是独立的会话...
+
+四 三大域对象总结
+request、session、ServletContext
+
+ServletContext域对象
+
+* 何时创建
+服务器正常启动，项目加载时，创建
+* 何时销毁
+服务器关闭或项目卸载时，销毁
+* 作用范围
+整个 web 项目（共享数据）
+HttpSession域对象
+
+* 何时创建
+用户第一次调用 request.getSession() 方法时，创建
+* 何时销毁
+服务器非正常关闭
+未活跃状态 30 分钟
+自杀
+* 作用范围
+一次会话中，多次请求间（共享数据）
+HttpServletRequest域对象
+
+* 何时创建
+用户发送请求时，创建
+* 何时销毁
+服务器做出响应后，销毁
+* 作用范围
+一次请求中，多次转发间（共享数据）
+小结
+
+能用小的不用大的： request<session<servletContext
+常用的场景:
+request：一次查询的结果（servlet转发jsp）
+
+session：存放当前会话的私有数据
+
+用户登录状态
+验证码
+
+购物车
+
+servletContext:若需要所有的servlet都能访问到,才使用这个域对象.
+ Filter & Listener
+web 的三大组件：
+servlet（控制器）
+filter（过滤器）
+listener（监听器）  
+Filter
+
+应用场景
+
+如：登录验证、统一编码处理、敏感字符过滤
+
+统一网站编码
+
+需求
+
+tomcat8.5 版本中已经将 get 请求的中文乱码解决了 , 但是 post 请求还存在中文乱码
+浏览器发出的任何请求，通过过滤器统一处理中文乱码
+ 
+
+Listener【了解】
+1.1 概述
+
+生活中的监听器
+
+我们很多商场有摄像头，监听着客户的一举一动。如果客户有违法行为，商场可以采取相应的措施。
+
+javaweb中的监听器
+
+在我们的java程序中，有时也需要监视某些事情，一旦被监听的对象发生相应的变化，我们应该采取相应的操作。
+
+监听web三大域对象：HttpServletRequest、HttpSession、ServletContext 通过监听器监听三大域对象它们的创建和销毁
+
+场景
+
+历史访问次数、统计在线人数、系统启动时初始化配置信息
+
+1.2 快速入门
+
+监听器在web开发中使用的比较少,见的机会就更少了,所以我们就使用ServletContextListenner来带领大家学习下监听器,因为这个监听器是监听器中使用率最高的一个,且监听器的使用方式都差不多。
+
+我们使用这个监听器可以在项目启动和销毁的时候做一些事情,例如,在项目启动的时候加载配置文件。
+
+ServletContextListener接口的API介绍--重要
+
+
+MVC模式&三层架构【思想】
+一 MVC模式
+1.1 JSP发展史
+
+早期只有servlet，只能使用response输出html标签，非常麻烦。
+
+后来有了JSP，简化了servlet开发；如果过度使用JSP，在JSP页面中写了大量的java代码和html标签，造成难于维护，难于分工协作的场景。
+
+再后来为了弥补过度使用jsp的问题，我们使用servlet+jsp这套组合拳，利于分工协作
+
+
+
+ 1.2 MVC介绍
+
+MVC设计模式： Model-View-Controller简写。
+
+MVC是软件工程中的一种软件架构模式，它是一种分离业务逻辑与显示界面的设计方法。
+
+简单来说：前辈们总结的一套设计经验，适合在各种软件开发领域，目的：高内聚，低耦合
+
+* M ： model （模型） JavaBean （ 1. 处理业务逻辑、 2. 封装实体）
+* V ： view （视图） Jsp （展示数据）
+* C ： controller （控制器） Servlet （ 1. 接收请求、 2. 调用模型、 3. 转发视图） MVC: 笔试题
+* 优缺点
+优点
+
+降低耦合性，方便维护和拓展，利于分工协作
+
+缺点
+
+使得项目架构变得复杂，对开发人员要求高
+
+
+
+二 三层架构（ MVC 升级版）
+改造了MVC以后的架构，就称为三层架构
+
+
+
+2.1 概念
+
+通常意义上的三层架构就是将整个业务应用划分为：表示（现）层、业务逻辑层、数据访问层。
+
+区分层次的目的 为了高内聚低耦合的思想
+
+表示（现）层：又称为 web 层，与浏览器进行数据交互（控制器和视图）
+业务逻辑层：又称为 service 层，处理业务数据（ if 判断， for 循环）
+数据访问（持久）层：又称为 dao 层，与数据库进行交互的（每一条（行）记录与 javaBean实体对应）
+包目录结构
+
+* com.lagou 基本包（公司域名倒写）
+
+* com.lagou.dao 持久层
+
+* com.lagou.service 业务层
+
+* com.lagou.web 表示层
+
+* com.lagou.domain 实体（JavaBean）
+
+* com.lagou.util 工具
